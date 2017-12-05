@@ -101,8 +101,11 @@ Option3:
 	echo "|                    |" >> ${wrapperDir}/frames_list.tbl
 	echo "|                    |" >> ${wrapperDir}/frames_list.tbl
 	#print each epoch in frames_list.tbl
-	foreach subDir ($TileDir*/)
-		if($subDir != $TileDir/Full) then
+	set fullDir = ${TileDir}Full/
+        foreach subDir ($TileDir*/)
+		echo "Subdir == ${subDir}"
+		echo "fullDir == ${fullDir}"
+		if($subDir != ${fullDir}) then
 			echo $subDir $rootname 1 1 0 0 >> ${wrapperDir}/frames_list.tbl
 		endif
 	end
