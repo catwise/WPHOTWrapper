@@ -24,13 +24,13 @@ if ($# != 3) then
         echo
         echo Exiting...
         exit
-#Option1
+#Mode1
 else if ($1 == 1) then
-        goto Option1
-#Option2
+        goto Mode1
+#Mode2
 else if ($1 == 2) then
-        goto Option2
-#Option3 Single Tile Mode
+        goto Mode2
+#Mode3 Single Tile Mode
 else if ($1 == 3) then
 	set ParentDir = $2
 	set RadecID = $3
@@ -55,22 +55,22 @@ else if ($1 == 3) then
                 echo Exiting...
                 exit
         endif
-	goto Option3
+	goto Mode3
 else
         #Error handling
         #option 1/2/3 not second parameter. program exits.
-        echo ERROR option 1, 2, or 3 not selected
+        echo ERROR mode 1, 2, or 3 not selected
         echo
         echo Exiting...
 	exit
 endif
 
-Option1:
+Mode1:
 	goto Done
-Option2:
+Mode2:
 	goto Done
 
-Option3:
+Mode3:
 	set RaRaRa = `echo $RadecID | awk '{print substr($0,0,3)}'`
 	set UnWISEDir = $ParentDir/UnWISE/Fulldepth/$RaRaRa/$RadecID/
 	set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
