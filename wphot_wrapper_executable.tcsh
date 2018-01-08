@@ -113,28 +113,28 @@ Mode3:
 	#replaces escape character on all existing "/"
 	set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
 	set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
-	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0
+	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
         #sed -i --follow-symlinks "22s/.*.*/set set flist =  frames_list.tbl" ${wrapperDir}/wphot_wrapper_option-0 #for this tile, list of the epochs. Wphot-Wrapper needs to generate this.
         #changes image id to the tile name (RadecID)
-        sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0
+        sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
-        sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0	
+        sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh	
 	#changes cname
-	sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0
+	sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes outdir
-        sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0
+        sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes verbose
-        sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0
+        sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 
 	#Run WPHOT Option 0
-	${wrapperDir}/wphot_wrapper_option-0
+	${wrapperDir}/wphot_wrapper_option-0.tcsh
 	goto Done
 
 Done:
 echo WPHOTWrapper Done!
-echo Removing wphot_wrapper_option-0--follow-symlinks
-rm -f wphot_wrapper_option-0--follow-symlinks
+echo Removing wphot_wrapper_option-0.tcsh--follow-symlinks
+rm -f wphot_wrapper_option-0.tcsh--follow-symlinks
 set endTime = `date '+%m/%d/%Y %H:%M:%S'`
 echo
 echo Wrapper Ended at:
