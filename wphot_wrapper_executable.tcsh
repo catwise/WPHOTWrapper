@@ -72,7 +72,7 @@ Mode2:
 
 Mode3:
 	set RaRaRa = `echo $RadecID | awk '{print substr($0,0,3)}'`
-	set UnWISEDir = $ParentDir/UnWISE/Fulldepth/$RaRaRa/$RadecID/
+	set UnWISEDir = $ParentDir/UnWISE/$RaRaRa/$RadecID/
 	set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
 	set TileDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/
 
