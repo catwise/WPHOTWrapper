@@ -13,11 +13,11 @@ set namelist = /Users/jarrett/wphotpm/bin/nl.WPHot_unwise
 
 #### MDET (this will change every time)
 
-set mdetfile = ../Parent_Dir/CatWISE//065/0657p151/Full/detlist.tbl
+set mdetfile = ../Parent_Dir/CatWISE/065/0657p151/Full/detlist.tbl
 
 ###### Frame parameters  (file names here will likely change)
 #CHANGE
-set flist =  frames_list.tbl #for this tile, list of the epochs. Wphot-Wrapper needs to generate this.
+set set flist =  frames_list_Desc.tbl
 
 set imageid = 0657p151
 
@@ -37,14 +37,14 @@ set fcov = n
 
 #set psfdir = /Volumes/CatWISE1/jwf/COSMOS_PSFs
 #CHANGE
-set psfdir = ../Parent_Dir/CatWISE//065/0657p151/Full/
+set psfdir = ../Parent_Dir/CatWISE/065/0657p151/Full/Desc/
 
 set psfname = unWISE
 
 ####  Coadd parameters  (coadd name will change with every set) *** CAUTION -- you need to add the root name at the end of the path
 
 #CHANGE
-set cname = ../Parent_Dir/UnWISE//065/0657p151//unwise-0657p151
+set cname = ../Parent_Dir/UnWISE/065/0657p151//unwise-0657p151
 
 set ctype = u
 
@@ -52,13 +52,13 @@ set ctype = u
 #### output directories & file names 
 
 #CHANGE
-set outdir = ../Parent_Dir/CatWISE//065/0657p151/Full/
+set outdir = ../Parent_Dir/CatWISE/065/0657p151/Full/Desc/
 mkdir -p $outdir
 
 #CHANGE
 set outname = $outdir/mdex_STD-msk.tbl
 set metaname = $outdir/meta_STD-msk.tbl
-set verbose = ../Parent_Dir/CatWISE//065/0657p151/Full//ProgramTerminalOutput/wphot_output.txt
+set verbose = ../Parent_Dir/CatWISE/065/0657p151/Full//ProgramTerminalOutput/wphot_1a_Desc_output.txt
 
 set outQAdir =  $outdir/QA 
 mkdir -p $outQAdir
