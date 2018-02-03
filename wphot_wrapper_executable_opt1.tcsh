@@ -17,7 +17,8 @@ echo This Wrapper will wrap around and run WPHOTPMC
 if ($# != 3) then
         #Error handling
         #Too many or too little arguments       
-        echo "ERROR: not enough arguments:"
+        echo ""
+	echo "ERROR: not enough arguments:"
         echo "Parameters for wrapper must be in the order:"
         echo 1\) Option 1, 2, or 3 \(1 == Input directory, 2 == Input list, 3 == Single Tile\)
         echo 2\) Input directory or list
@@ -69,7 +70,7 @@ else if ($1 == 3) then
  	echo Parent Dir ==  $ParentDir
         echo Tile Name == $RadecID
         echo
-        echo "Is this the correct Parent Directory  and Tile Name? (y/n)"
+        echo "Is this the correct Parent Directory and Tile Name? (y/n)"
         set userInput = $<
  	#Error handling
         #if user input dir wrong
@@ -100,7 +101,9 @@ endif
 Mode1:
 #===============================================================================================================================================================        
 # loops through all of the tiles and executes wphot
-
+#TODO update this to work for option1
+echo ERROR mode1 not edited for option1. Exiting...
+goto Done
 set FulldepthDir = ${InputsDir}/
 
 echo Wrapper now starting...
@@ -258,7 +261,7 @@ Mode3:
 	#end
 	
 	#GenWFL Makes frames list for Asce and Desc	
-	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl
+#	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl
 	
 	#replaces escape character on all existing "/"
 	set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
@@ -278,10 +281,15 @@ Mode3:
 	sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes outdir
         sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedAsceDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+	#changes mdex output file name
+        sed -i --follow-symlinks "59s/.*.*/set outname = ${editedAsceDir}\/mdex_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes meta output file name
+        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedAsceDir}\/meta_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes verbose
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Asce_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#Run WPHOT
-	${wrapperDir}/wphot_wrapper_option-0.tcsh
+	#TODO TESTIGN remove!!!
+	#${wrapperDir}/wphot_wrapper_option-0.tcsh
 	
 	
 	#Desc call
@@ -296,10 +304,32 @@ Mode3:
 	sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes outdir
         sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedDescDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes mdex output file name
+	sed -i --follow-symlinks "59s/.*.*/set outname = ${editedDescDir}\/mdex_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+	#changes meta output file name
+        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedDescDir}\/meta_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes verbose
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Desc_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#Run WPHOT
-	${wrapperDir}/wphot_wrapper_option-0.tcsh
+	#TODO TESTING remove!!!
+	#${wrapperDir}/wphot_wrapper_option-0.tcsh
+
+	#Post-WPHOT work
+	#stf
+	#call on Ascending
+	/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl
+	#call on Descending 
+	/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl
+	#TODO get pid, wait for pid && run cmd
+
+	#gsa
+	#set Radius
+	#echo input radius size
+	#$? > $Radius
+#	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/mdex_asce.Opt-1a.tbl -t ${DescDir}/mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}stf-mrg13_asce.Opt-1a-rf2.tbl
+	/Volumes/CatWISE1/jwf/bin/gsa -t ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl -t ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -a1 -ns -rf1 ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl -rf2 ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl 
+	#mrgad
+	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/mdex_asce.Opt-1a.tbl -id ${DescDir}/mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
 
 	goto Done
 
