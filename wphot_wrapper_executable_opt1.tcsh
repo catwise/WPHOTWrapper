@@ -261,7 +261,7 @@ Mode3:
 	#end
 	
 	#GenWFL Makes frames list for Asce and Desc	
-#	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl
+	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl
 	
 	#replaces escape character on all existing "/"
 	set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
@@ -288,8 +288,7 @@ Mode3:
 	#changes verbose
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Asce_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#Run WPHOT
-	#TODO TESTIGN remove!!!
-	#${wrapperDir}/wphot_wrapper_option-0.tcsh
+	${wrapperDir}/wphot_wrapper_option-0.tcsh
 	
 	
 	#Desc call
@@ -311,8 +310,7 @@ Mode3:
 	#changes verbose
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Desc_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#Run WPHOT
-	#TODO TESTING remove!!!
-	#${wrapperDir}/wphot_wrapper_option-0.tcsh
+	${wrapperDir}/wphot_wrapper_option-0.tcsh
 
 	#Post-WPHOT work
 	#stf
@@ -326,7 +324,7 @@ Mode3:
 	#set Radius
 	#echo input radius size
 	#$? > $Radius
-#	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/mdex_asce.Opt-1a.tbl -t ${DescDir}/mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}stf-mrg13_asce.Opt-1a-rf2.tbl
+	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/mdex_asce.Opt-1a.tbl -t ${DescDir}/mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}stf-mrg13_asce.Opt-1a-rf2.tbl
 	/Volumes/CatWISE1/jwf/bin/gsa -t ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl -t ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -a1 -ns -rf1 ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl -rf2 ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl 
 	#mrgad
 	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/mdex_asce.Opt-1a.tbl -id ${DescDir}/mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
