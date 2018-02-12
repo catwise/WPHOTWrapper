@@ -58,7 +58,7 @@ mkdir -p $outdir
 #CHANGE
 set outname = ../Parent_Dir//CatWISE/065/0657p151/Full/Asce//mdex_asce.Opt-1a.tbl
 set metaname = ../Parent_Dir//CatWISE/065/0657p151/Full/Asce//meta_asce.Opt-1a.tbl
-set verbose = ../Parent_Dir//CatWISE/065/0657p151/Full//ProgramTerminalOutput/wphot_1a_Asce_output.txt
+set verbose = ../Parent_Dir//CatWISE/065/0657p151/Full//ProgramTerminalOutput/wphot_1a_Desc_output.txt
 
 set outQAdir =  $outdir/QA 
 mkdir -p $outQAdir

@@ -1,0 +1,7 @@
+| Ep|   ScanDir   |   CryoType    |PAmin | PAmax| dPA  |Pct|OK|
+e000    Asce        (4-band cryo)   170.1  171.0    0.9 100  Y
+e001    Desc        (4-band cryo)   350.0  351.0    1.0 100  Y
+e002    Asce        (post-cryo)     170.1  171.0    0.9 100  Y
+e003    Desc        (post-cryo)     350.0  351.0    1.0 100  Y
+e004    Asce        (post-cryo)     170.1  171.0    0.9 100  Y
+e005    Desc        (post-cryo)     350.0  351.0    1.0 100  Y

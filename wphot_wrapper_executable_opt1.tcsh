@@ -261,7 +261,7 @@ Mode3:
 	#end
 	
 	#GenWFL Makes frames list for Asce and Desc	
-	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl
+	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl -ox epochs.tbl
 	
 	#replaces escape character on all existing "/"
 	set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
@@ -313,21 +313,22 @@ Mode3:
 	${wrapperDir}/wphot_wrapper_option-0.tcsh
 
 	#Post-WPHOT work
+
 	#stf
 	#call on Ascending
-	/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl
+	/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl
 	#call on Descending 
-	/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl
+	/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl
 	#TODO get pid, wait for pid && run cmd
 
 	#gsa
 	#set Radius
 	#echo input radius size
 	#$? > $Radius
-	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/mdex_asce.Opt-1a.tbl -t ${DescDir}/mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}stf-mrg13_asce.Opt-1a-rf2.tbl
-	/Volumes/CatWISE1/jwf/bin/gsa -t ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl -t ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -a1 -ns -rf1 ${CatWISEDir}/stf-mdex_asce.Opt-1a.tbl -rf2 ${CatWISEDir}/stf-mdex_desc.Opt-1a.tbl 
+	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -rf2 ${DescDir}/stf-mdex_desc.Opt-1a.tbl 
+
 	#mrgad
-	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/mdex_asce.Opt-1a.tbl -id ${DescDir}/mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
+	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
 
 	goto Done
 
