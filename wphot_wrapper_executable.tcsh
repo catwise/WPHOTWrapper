@@ -175,9 +175,9 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 		#changes outdir
         	sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 		#changes mdex output file name
-        	sed -i --follow-symlinks "59s/.*.*/set outname = ${editedDescDir}\/mdex_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        	sed -i --follow-symlinks "59s/.*.*/set outname = ${editedCatWISEDir}\/mdex_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         	#changes meta output file name
-        	sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedDescDir}\/meta_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        	sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedCatWISEDir}\/meta_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 		#changes verbose
         	sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 
@@ -261,9 +261,9 @@ Mode3:
 	#changes outdir
         sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes mdex output file name
-        sed -i --follow-symlinks "59s/.*.*/set outname = ${editedDescDir}\/mdex_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "59s/.*.*/set outname = ${editedCatWISEDir}\/mdex_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes meta output file name
-        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedDescDir}\/meta_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedCatWISEDir}\/meta_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#changes verbose
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 

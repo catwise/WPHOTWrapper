@@ -17,7 +17,7 @@ set mdetfile = ../Parent_Dir//CatWISE/065/0657p151/Full/detlist.tbl
 
 ###### Frame parameters  (file names here will likely change)
 #CHANGE
-set set flist =  frames_list_Asce.tbl
+set set flist =  frames_list_Desc.tbl
 
 set imageid = 0657p151
 
@@ -37,7 +37,7 @@ set fcov = n
 
 #set psfdir = /Volumes/CatWISE1/jwf/COSMOS_PSFs
 #CHANGE
-set psfdir = ../Parent_Dir//CatWISE/065/0657p151/Full/Asce/
+set psfdir = ../Parent_Dir//CatWISE/065/0657p151/Full/
 
 set psfname = unWISE
 
@@ -52,12 +52,12 @@ set ctype = u
 #### output directories & file names 
 
 #CHANGE
-set outdir = ../Parent_Dir//CatWISE/065/0657p151/Full/Asce/
+set outdir = ../Parent_Dir//CatWISE/065/0657p151/Full/
 mkdir -p $outdir
 
 #CHANGE
-set outname = ../Parent_Dir//CatWISE/065/0657p151/Full/Asce//mdex_asce.Opt-1a.tbl
-set metaname = ../Parent_Dir//CatWISE/065/0657p151/Full/Asce//meta_asce.Opt-1a.tbl
+set outname = ../Parent_Dir//CatWISE/065/0657p151/Full//mdex_STD-msk.tbl
+set metaname = ../Parent_Dir//CatWISE/065/0657p151/Full//meta_STD-msk.tbl
 set verbose = ../Parent_Dir//CatWISE/065/0657p151/Full//ProgramTerminalOutput/wphot_1a_Desc_output.txt
 
 set outQAdir =  $outdir/QA 
