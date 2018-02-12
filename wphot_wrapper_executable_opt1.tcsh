@@ -325,7 +325,7 @@ Mode3:
 	#set Radius
 	#echo input radius size
 	#$? > $Radius
-	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -rf2 ${DescDir}/stf-mdex_desc.Opt-1a.tbl 
+	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}/stf-mrg13_desc.Opt-1a-rf2.tbl 
 
 	#mrgad
 	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
