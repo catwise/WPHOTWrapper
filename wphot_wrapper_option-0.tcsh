@@ -37,7 +37,7 @@ set fcov = n
 
 #set psfdir = /Volumes/CatWISE1/jwf/COSMOS_PSFs
 #CHANGE
-set psfdir = ../Parent_Dir//CatWISE/065/0657p151/Full/
+set psfdir = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc/
 
 set psfname = unWISE
 
@@ -52,13 +52,13 @@ set ctype = u
 #### output directories & file names 
 
 #CHANGE
-set outdir = ../Parent_Dir//CatWISE/065/0657p151/Full/
+set outdir = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc/
 mkdir -p $outdir
 
 #CHANGE
-set outname = ../Parent_Dir//CatWISE/065/0657p151/Full//mdex_STD-msk.tbl
-set metaname = ../Parent_Dir//CatWISE/065/0657p151/Full//meta_STD-msk.tbl
-set verbose = ../Parent_Dir//CatWISE/065/0657p151/Full//ProgramTerminalOutput/wphot_output.txt
+set outname = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc//mdex_desc.Opt-1a.tbl
+set metaname = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc//meta_desc.Opt-1a.tbl
+set verbose = ../Parent_Dir//CatWISE/065/0657p151/Full//ProgramTerminalOutput/wphot_1a_Desc_output.txt
 
 set outQAdir =  $outdir/QA 
 mkdir -p $outQAdir
