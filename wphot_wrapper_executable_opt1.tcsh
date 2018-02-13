@@ -29,10 +29,10 @@ if ($# != 3) then
         exit
 #Mode1
 else if ($1 == 1) then
-        set InputsDir = $2
-        set OutputsDir = $3
-        echo Inputs directory ==  $InputsDir
-        echo Outputs directory == $OutputsDir
+        set ParentDir = $2
+       # set OutputsDir = $3
+        echo Parent directory ==  $ParentDir
+       # echo Outputs directory == $OutputsDir
         echo "Are these the correct input and output directories? (y/n)"
         set userInput = $<
 
@@ -46,18 +46,18 @@ else if ($1 == 1) then
                 exit
         endif
         #if directories dont exist, throw error
-        if(! -d $InputsDir) then
-                echo ERROR: Input Directory $InputsDir doest not exist.
+        if(! -d $ParentDir) then
+                echo ERROR: Input Directory $ParentDir doest not exist.
                 echo
                 echo Exiting...
                 exit
         endif
-        if (! -d $OutputsDir) then
-                echo ERROR: Output Directory $OutputsDir does not exist.
-                echo
-                echo Exiting...
-                exit
-        endif
+        #if (! -d $OutputsDir) then
+        #        echo ERROR: Output Directory $OutputsDir does not exist.
+        #        echo
+        #        echo Exiting...
+        #        exit
+        #endif
 
 	goto Mode1
 #Mode2

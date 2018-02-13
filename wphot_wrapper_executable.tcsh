@@ -86,8 +86,8 @@ else if ($1 == 2) then
                 echo Exiting...
                 exit
         endif
-        if (! -d $OutputsDir) then
-                echo ERROR: Output Directory $OutputsDir does not exist.
+        if (! -d $ParentDir) then
+                echo ERROR: Parent Directory $ParentDir does not exist.
                 echo
                 echo Exiting...
                 exit
@@ -249,9 +249,10 @@ Mode2:
         echo "RaRaRa == "$RaRaRa
         echo "RadecID == "$RadecID
         
-        set UnWISEDir = $InputsDir/$RaRaRa/$RadecID/
-        set CatWISEDir = $OutputsDir/$RaRaRa/$RadecID/Full/ 
-        set TileDir = $OutputsDir/$RaRaRa/$RadecID/
+        set UnWISEDir = $ParentDir/UnWISE/$RaRaRa/$RadecID/
+        set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
+        set TileDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/
+        
         echo $FulldepthDir
         echo $RadecIDDir
         echo RadecID == $RadecID
