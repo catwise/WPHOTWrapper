@@ -8,7 +8,7 @@ echo
 echo Wrapper Started at:
 echo $startTime
 echo 
-echo Version 2.01 
+echo Version 2.02 
 echo
 echo This Wrapper will wrap around and run WPHOTPMC
 #echo ================================================================================================================
@@ -18,7 +18,7 @@ if ($# != 3) then
         #Error handling
         #Too many or too little arguments       
         echo ""
-	echo "ERROR: not enough arguments:"
+		echo "ERROR: not enough arguments:"
         echo "Parameters for wrapper must be in the order:"
         echo 1\) Option 1, 2, or 3 \(1 == Input directory, 2 == Input list, 3 == Single Tile\)
         echo 2\) Input directory or list
