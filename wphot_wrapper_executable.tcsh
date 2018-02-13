@@ -182,7 +182,7 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
         	sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 
 		#Run WPHOT Option 0
-		${wrapperDir}/wphot_wrapper_option-0.tcsh
+		${wrapperDir}/wphot_wrapper_option-0.tcsh &
 		
 
 		while(`ps -ef | grep wphot | wc -l` > 12)
@@ -192,7 +192,6 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 
                 echo wphot for ${RadecID} done!
 
-                echo "---------------------------------------- end fbt3 and PSFavr8 wrapper ----------------------------------------"
                 echo ================================ ending wphot wrapper loop iteration =================================
         end
 end
