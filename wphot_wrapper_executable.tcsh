@@ -253,10 +253,6 @@ Mode2:
         set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
         set TileDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/
         
-        echo $FulldepthDir
-        echo $RadecIDDir
-        echo RadecID == $RadecID
-        echo RaRaRa == $RaRaRa
         #Error Checking
         if(! -d $UnWISEDir) then
             echo ERROR: Input dir $UnWISEDir does not exist.
