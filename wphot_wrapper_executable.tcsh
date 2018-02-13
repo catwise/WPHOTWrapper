@@ -240,14 +240,16 @@ Mode2:
     foreach line (`cat $InputsList`)    
             echo ===================================== start MDET wrapper loop iteration ======================================
      
-            set RaRaRa =  `echo $line | awk -F "/" '{print $(NF-1)}'`
-            set RadecID = `echo $line | awk -F "/" '{print $(NF)}'`
+        #set RaRaRa =  `echo $line | awk -F "/" '{print $(NF-1)}'`
+        #set RadecID = `echo $line | awk -F "/" '{print $(NF)}'`
             
-            echo "RaRaRa == "$RaRaRa
-            echo "RadecID == "$RadecID
+        set RadecID = `echo $line`
+        set RaRaRa = `echo $RadecID | awk '{print substr($0,0,3)}'`
+
+        echo "RaRaRa == "$RaRaRa
+        echo "RadecID == "$RadecID
         
-            echo "--------------------------------------------- start MDET wrapper ---------------------------------------------"
-            set UnWISEDir = $InputsDir/$RaRaRa/$RadecID/
+        set UnWISEDir = $InputsDir/$RaRaRa/$RadecID/
         set CatWISEDir = $OutputsDir/$RaRaRa/$RadecID/Full/ 
         set TileDir = $OutputsDir/$RaRaRa/$RadecID/
         echo $FulldepthDir
@@ -318,7 +320,6 @@ Mode2:
 
                 echo wphot for ${RadecID} done!
             
-            echo "---------------------------------------------- end MDET wrapper ----------------------------------------------"
             echo ====================================== end MDET wrapper loop iteration =======================================
     end
 
