@@ -62,6 +62,36 @@ else if ($1 == 1) then
 	goto Mode1
 #Mode2
 else if ($1 == 2) then
+		set InputsList = $2
+        set ParentDir = $3
+        echo Inputs list ==  $InputsList
+        echo Parent directory == $ParentDir
+        echo
+        echo "Is this the correct input list and Parent directory? (y/n)"
+        set userInput = $<
+    
+    #Error handling
+        #if user input dir wrong
+        if($userInput != "Y" && $userInput != "y") then
+                echo Please execute program again with full Input List file as the 2nd parameter and the Parent Directory path as your 3rd parameter
+                #TODO actually throw an error instead of just outputing to stdout... output to stderr
+                echo
+                echo Exiting...
+                exit
+        endif
+        #if directories dont exist, throw error
+        if(! -f $InputsList) then
+                echo ERROR: Input List file $InputsDir doest not exist.
+                echo
+                echo Exiting...
+                exit
+        endif
+        if (! -d $ParentDir) then
+                echo ERROR: Parent Directory $ParentDir does not exist.
+                echo
+                echo Exiting...
+                exit
+        endif
         goto Mode2
 #Mode3 Single Tile Mode
 else if ($1 == 3) then
@@ -254,6 +284,135 @@ echo
 goto Done
 
 Mode2:
+	
+    foreach line (`cat $InputsList`)    
+        echo ===================================== start wphot wrapper loop iteration ======================================
+     
+        set RadecID = `echo $line`
+        set RaRaRa = `echo $RadecID | awk '{print substr($0,0,3)}'`
+
+        echo "RaRaRa == "$RaRaRa
+        echo "RadecID == "$RadecID
+        set UnWISEDir = $ParentDir/UnWISE/$RaRaRa/$RadecID/
+		set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
+		set TileDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/
+		set AsceDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/Asce/ 
+		set DescDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/Desc/ 
+
+		
+		#Error Checking
+		if(! -d $UnWISEDir) then
+	                echo ERROR: $UnWISEDir does not exist.
+	                echo
+	                echo Exiting...
+	                exit
+	        endif
+		if(! -d $CatWISEDir) then
+	                echo ERROR: $CatWISEDir does not exist.
+	                echo
+	                echo Exiting...
+	                exit
+	        endif 
+		if(! -d $AsceDir) then
+	                echo ERROR: $AsceDir does not exist.
+	                echo
+	                echo Exiting...
+	                exit
+	        endif
+		if(! -d $DescDir) then
+	                echo ERROR: $DescDir does not exist.
+	                echo
+	                echo Exiting...
+	                exit
+	        endif 
+		
+		##***READ CAUTION***, the cname == root name == unwise-0657p151... thus, same as the "base" in frames_list.tbl 
+		#automatically generates frames_list.tbl
+		set rootname = unwise-$RadecID
+		
+		#GenWFL Makes frames list for Asce and Desc	
+		/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl -ox epochs.tbl
+		
+		#replaces escape character on all existing "/"
+		set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
+		set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
+		set editedAsceDir=`echo $AsceDir | sed 's/\//\\\//g'`
+		set editedDescDir=`echo $DescDir | sed 's/\//\\\//g'`
+		
+		#Asce call
+		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes frames_list output location TODO Do I really need to keep the frames list?
+        sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes image id to the tile name (RadecID)
+        sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes psfdir
+        sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedAsceDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh	
+		#changes cname
+		sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#changes outdir
+        sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedAsceDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#changes mdex output file name
+        sed -i --follow-symlinks "59s/.*.*/set outname = ${editedAsceDir}\/mdex_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes meta output file name
+        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedAsceDir}\/meta_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#changes verbose
+        sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Asce_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#Run WPHOT
+		${wrapperDir}/wphot_wrapper_option-0.tcsh
+	
+	
+		#Desc call
+		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes frames_list output location TODO Do I really need to keep the frames list?
+        sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+        #changes image id to the tile name (RadecID)
+        sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes psfdir
+        sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedDescDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh	
+		#changes cname
+		sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#changes outdir
+        sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedDescDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes mdex output file name
+		sed -i --follow-symlinks "59s/.*.*/set outname = ${editedDescDir}\/mdex_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#changes meta output file name
+        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedDescDir}\/meta_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#changes verbose
+        sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Desc_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+		#Run WPHOT
+		${wrapperDir}/wphot_wrapper_option-0.tcsh
+
+		#Post-WPHOT work
+
+		#stf
+		#call on Ascending
+		/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl
+		#call on Descending 
+		/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl
+		#TODO get pid, wait for pid && run cmd
+
+		#gsa
+		#set Radius
+		#echo input radius size
+		#$? > $Radius
+		/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}/stf-mrg13_desc.Opt-1a-rf2.tbl 
+
+		#mrgad
+		/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
+	        
+
+	            
+	    echo ====================================== end wphot wrapper loop iteration =======================================
+	end
+
+    #===============================================================================================================================================================
+
+    #wait for background processes to finish
+    wait
+    echo wphot wrapper finished!
+    echo
+
+
 	goto Done
 
 Mode3:

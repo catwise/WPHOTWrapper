@@ -225,24 +225,21 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 
                 echo ================================ ending wphot wrapper loop iteration =================================
         end
-end
+    end
 
 #===============================================================================================================================================================
 
-#wait for background processes to finish
-wait
-echo wphot wrapper finished!
-echo
-goto Done
+    #wait for background processes to finish
+    wait
+    echo wphot wrapper finished!
+    echo
+    goto Done
 
 Mode2:
     
     foreach line (`cat $InputsList`)    
-            echo ===================================== start MDET wrapper loop iteration ======================================
+            echo ===================================== start wphot wrapper loop iteration ======================================
      
-        #set RaRaRa =  `echo $line | awk -F "/" '{print $(NF-1)}'`
-        #set RadecID = `echo $line | awk -F "/" '{print $(NF)}'`
-            
         set RadecID = `echo $line`
         set RaRaRa = `echo $RadecID | awk '{print substr($0,0,3)}'`
 
@@ -289,22 +286,22 @@ Mode2:
         set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
         set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
         sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-            #changes frames_list output location TODO Do I really need to keep the frames list?
-            #sed -i --follow-symlinks "22s/.*.*/set set flist =  frames_list.tbl" ${wrapperDir}/wphot_wrapper_option-0 #for this tile, list of the epochs. Wphot-Wrapper needs to generate this.
-            #changes image id to the tile name (RadecID)
-            sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-            #changes psfdir
-            sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+        #changes frames_list output location TODO Do I really need to keep the frames list?
+        #sed -i --follow-symlinks "22s/.*.*/set set flist =  frames_list.tbl" ${wrapperDir}/wphot_wrapper_option-0 #for this tile, list of the epochs. Wphot-Wrapper needs to generate this.
+        #changes image id to the tile name (RadecID)
+        sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes psfdir
+        sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
         #changes cname
         sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes outdir
-            sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedCatWISEDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes mdex output file name
-            sed -i --follow-symlinks "59s/.*.*/set outname = ${editedCatWISEDir}\/mdex_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-            #changes meta output file name
-            sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedCatWISEDir}\/meta_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "59s/.*.*/set outname = ${editedCatWISEDir}\/mdex_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        #changes meta output file name
+        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedCatWISEDir}\/meta_STD-msk.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes verbose
-            sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 
         #Run WPHOT Option 0
         ${wrapperDir}/wphot_wrapper_option-0.tcsh &
@@ -317,14 +314,14 @@ Mode2:
 
                 echo wphot for ${RadecID} done!
             
-            echo ====================================== end MDET wrapper loop iteration =======================================
+            echo ====================================== end wphot wrapper loop iteration =======================================
     end
 
     #===============================================================================================================================================================
 
     #wait for background processes to finish
     wait
-    echo MDET wrapper finished!
+    echo wphot wrapper finished!
     echo
 
 
