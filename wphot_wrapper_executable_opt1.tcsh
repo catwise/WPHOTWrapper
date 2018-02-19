@@ -327,7 +327,7 @@ Mode2:
 	        endif 
 		
 		##***READ CAUTION***, the cname == root name == unwise-0657p151... thus, same as the "base" in frames_list.tbl 
-		#automatically generates frames_list.tbl
+		#automatically generates frames_list.tbl 
 		set rootname = unwise-$RadecID
 		
 		#GenWFL Makes frames list for Asce and Desc	
