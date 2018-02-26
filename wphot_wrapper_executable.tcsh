@@ -177,17 +177,17 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 		#automatically generates frames_list.tbl
 		set rootname = unwise-$RadecID
 		#print tbl header in frames_list.tbl
-		echo "|  path              |      base     | b1 | b2 | b3 | b4 |" > ${wrapperDir}/frames_list.tbl
-		echo "|   c                |       c       |  i |  i |  i |  i |" >> ${wrapperDir}/frames_list.tbl
-		echo "|                    |" >> ${wrapperDir}/frames_list.tbl
-		echo "|                    |" >> ${wrapperDir}/frames_list.tbl
+		echo "|  path              |      base     | b1 | b2 | b3 | b4 |" > ${TileDir}/frames_list.tbl
+		echo "|   c                |       c       |  i |  i |  i |  i |" >> ${TileDir}/frames_list.tbl
+		echo "|                    |" >> ${TileDir}/frames_list.tbl
+		echo "|                    |" >> ${TileDir}/frames_list.tbl
 		#print each epoch in frames_list.tbl
 		set fullDir = ${TileDir}Full/
        		foreach subDir ($TileDir*/)
 			echo "Subdir == ${subDir}"
 			echo "fullDir == ${fullDir}"
 			if($subDir != ${fullDir}) then
-				echo $subDir $rootname 1 1 0 0 >> ${wrapperDir}/frames_list.tbl
+				echo $subDir $rootname 1 1 0 0 >> ${TileDir}/frames_list.tbl
 			endif
 		end
 
@@ -268,17 +268,17 @@ Mode2:
         #automatically generates frames_list.tbl
         set rootname = unwise-$RadecID
         #print tbl header in frames_list.tbl
-        echo "|  path              |      base     | b1 | b2 | b3 | b4 |" > ${wrapperDir}/frames_list.tbl
-        echo "|   c                |       c       |  i |  i |  i |  i |" >> ${wrapperDir}/frames_list.tbl
-        echo "|                    |" >> ${wrapperDir}/frames_list.tbl
-        echo "|                    |" >> ${wrapperDir}/frames_list.tbl
+        echo "|  path              |      base     | b1 | b2 | b3 | b4 |" > ${TileDir}/frames_list.tbl
+        echo "|   c                |       c       |  i |  i |  i |  i |" >> ${TileDir}/frames_list.tbl
+        echo "|                    |" >> ${TileDir}/frames_list.tbl
+        echo "|                    |" >> ${TileDir}/frames_list.tbl
         #print each epoch in frames_list.tbl
         set fullDir = ${TileDir}Full/
             foreach subDir ($TileDir*/)
             echo "Subdir == ${subDir}"
             echo "fullDir == ${fullDir}"
             if($subDir != ${fullDir}) then
-                echo $subDir $rootname 1 1 0 0 >> ${wrapperDir}/frames_list.tbl
+                echo $subDir $rootname 1 1 0 0 >> ${TileDir}/frames_list.tbl
             endif
         end
 
@@ -351,17 +351,17 @@ Mode3:
 	#automatically generates frames_list.tbl
 	set rootname = unwise-$RadecID
 	#print tbl header in frames_list.tbl
-	echo "|  path              |      base     | b1 | b2 | b3 | b4 |" > ${wrapperDir}/frames_list.tbl
-	echo "|   c                |       c       |  i |  i |  i |  i |" >> ${wrapperDir}/frames_list.tbl
-	echo "|                    |" >> ${wrapperDir}/frames_list.tbl
-	echo "|                    |" >> ${wrapperDir}/frames_list.tbl
+	echo "|  path              |      base     | b1 | b2 | b3 | b4 |" > ${TileDir}/frames_list.tbl
+	echo "|   c                |       c       |  i |  i |  i |  i |" >> ${TileDir}/frames_list.tbl
+	echo "|                    |" >> ${TileDir}/frames_list.tbl
+	echo "|                    |" >> ${TileDir}/frames_list.tbl
 	#print each epoch in frames_list.tbl
 	set fullDir = ${TileDir}Full/
         foreach subDir ($TileDir*/)
 		echo "Subdir == ${subDir}"
 		echo "fullDir == ${fullDir}"
 		if($subDir != ${fullDir}) then
-			echo $subDir $rootname 1 1 0 0 >> ${wrapperDir}/frames_list.tbl
+			echo $subDir $rootname 1 1 0 0 >> ${TileDir}/frames_list.tbl
 		endif
 	end
 

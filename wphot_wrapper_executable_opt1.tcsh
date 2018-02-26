@@ -192,7 +192,7 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 		set rootname = unwise-$RadecID
 		
 		#GenWFL Makes frames list for Asce and Desc	
-		/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl -ox epochs.tbl
+		/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${TileDir}/frames_list_Asce.tbl -od ${TileDir}/frames_list_Desc.tbl -ox ${TileDir}/epochs.tbl
 		
 		#replaces escape character on all existing "/"
 		set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
@@ -203,7 +203,7 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 		#Asce call
 		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	    #changes frames_list output location TODO Do I really need to keep the frames list?
-	    sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+	    sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	    #changes image id to the tile name (RadecID)
 	    sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	    #changes psfdir
@@ -225,7 +225,7 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 		#Desc call
 		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	    #changes frames_list output location TODO Do I really need to keep the frames list?
-	    sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+	    sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
 	    #changes image id to the tile name (RadecID)
 	    sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	    #changes psfdir
@@ -331,7 +331,7 @@ Mode2:
 		set rootname = unwise-$RadecID
 		
 		#GenWFL Makes frames list for Asce and Desc	
-		/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl -ox epochs.tbl
+		/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${TileDir}/frames_list_Asce.tbl -od ${TileDir}/frames_list_Desc.tbl -ox ${TileDir}/epochs.tbl
 		
 		#replaces escape character on all existing "/"
 		set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
@@ -342,7 +342,7 @@ Mode2:
 		#Asce call
 		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}\/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -364,7 +364,7 @@ Mode2:
 		#Desc call
 		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -469,7 +469,7 @@ Mode3:
 	#end
 	
 	#GenWFL Makes frames list for Asce and Desc	
-	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa frames_list_Asce.tbl -od frames_list_Desc.tbl -ox epochs.tbl
+	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${TileDir}/frames_list_Asce.tbl -od ${TileDir}/frames_list_Desc.tbl -ox ${TileDir}/epochs.tbl
 	
 	#replaces escape character on all existing "/"
 	set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
@@ -480,7 +480,7 @@ Mode3:
 	#Asce call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -502,7 +502,7 @@ Mode3:
 	#Desc call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
