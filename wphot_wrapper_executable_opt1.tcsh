@@ -14,16 +14,17 @@ echo This Wrapper will wrap around and run WPHOTPMC
 #echo ================================================================================================================
 #echo WARNING\: Elijah is doing testing\/editing to this program \(Oct10 2017\). This script will not work propperly.
 #echo ================================================================================================================
-if ($# != 3) then
+if ($# != 2 && $# != 3) then
         #Error handling
         #Too many or too little arguments       
         echo ""
-		echo "ERROR: not enough arguments:"
-        echo "Parameters for wrapper must be in the order:"
-        echo 1\) Option 1, 2, or 3 \(1 == Input directory, 2 == Input list, 3 == Single Tile\)
-        echo 2\) Input directory or list
-        echo 3\) Output directory
-        echo "i.e. 'icore_wrapper_executable option InputDir/List OutputDir'"
+	echo "ERROR: not enough arguments:"
+	echo Mode 1 call:
+	echo ./wphot_wrapper_executable_opt1.tcsh 1 ParentDir/
+	echo Mode 2 call:
+	echo ./wphot_wrapper_executable_opt1.tcsh 2 inputList.txt ParentDir/
+	echo Mode 3 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 3 ParentDir/ TileName
         echo
         echo Exiting...
         exit
@@ -33,7 +34,7 @@ else if ($1 == 1) then
        # set OutputsDir = $3
         echo Parent directory ==  $ParentDir
        # echo Outputs directory == $OutputsDir
-        echo "Are these the correct input and output directories? (y/n)"
+        echo "Is this the correct Parent directory? (y/n)"
         set userInput = $<
 
         #Error handling
@@ -62,7 +63,7 @@ else if ($1 == 1) then
 	goto Mode1
 #Mode2
 else if ($1 == 2) then
-		set InputsList = $2
+	set InputsList = $2
         set ParentDir = $3
         echo Inputs list ==  $InputsList
         echo Parent directory == $ParentDir
@@ -132,18 +133,14 @@ Mode1:
 #===============================================================================================================================================================        
 # loops through all of the tiles and executes wphot
 #TODO update this to work for option1
-echo ERROR mode1 not edited for option1. Exiting...
-goto Done
-set FulldepthDir = ${InputsDir}/
+set InputDir = $ParentDir/UnWISE/
 
 echo Wrapper now starting...
 echo
 echo
 echo 1\) wphot wrapper programs now starting...
 
-#TESTING
-#while
-foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get each RadecIDdir, run wrapper on RadecID tile
+foreach RaRaRaDir ($InputDir*/) #for each directory in InputDir, get each RadecIDdir, run wrapper on RadecID tile
 
         foreach RadecIDDir ($RaRaRaDir*/)
 
@@ -151,8 +148,8 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 	#Stops calling programs if number of scripts running is greater than number of threads on CPU
                
 		set tempSize = `echo $RadecIDDir  | awk '{print length($0)}'`
-        @ tempIndex = ($tempSize - 8)
-        set RadecID = `echo $RadecIDDir | awk -v startIndex=$tempIndex '{print substr($0,startIndex,8)}'`
+        	@ tempIndex = ($tempSize - 8)
+        	set RadecID = `echo $RadecIDDir | awk -v startIndex=$tempIndex '{print substr($0,startIndex,8)}'`
 		set RaRaRa = `echo $RadecID | awk '{print substr($0,0,3)}'`
 		set UnWISEDir = $ParentDir/UnWISE/$RaRaRa/$RadecID/
 		set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
@@ -186,88 +183,14 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 	                echo Exiting...
 	                exit
 	        endif 
-		
-		##***READ CAUTION***, the cname == root name == unwise-0657p151... thus, same as the "base" in frames_list.tbl 
-		#automatically generates frames_list.tbl
-		set rootname = unwise-$RadecID
-		
-		#GenWFL Makes frames list for Asce and Desc	
-		/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${TileDir}/frames_list_Asce.tbl -od ${TileDir}/frames_list_Desc.tbl -ox ${TileDir}/epochs.tbl
-		
-		#replaces escape character on all existing "/"
-		set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
-		set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
-		set editedAsceDir=`echo $AsceDir | sed 's/\//\\\//g'`
-		set editedDescDir=`echo $DescDir | sed 's/\//\\\//g'`
-		
-		#Asce call
-		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-	    #changes frames_list output location TODO Do I really need to keep the frames list?
-	    sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-	    #changes image id to the tile name (RadecID)
-	    sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-	    #changes psfdir
-	    sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedAsceDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh	
-		#changes cname
-		sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes outdir
-	    sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedAsceDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes mdex output file name
-	    sed -i --follow-symlinks "59s/.*.*/set outname = ${editedAsceDir}\/mdex_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-	    #changes meta output file name
-	    sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedAsceDir}\/meta_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes verbose
-	    sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Asce_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#Run WPHOT
-		${wrapperDir}/wphot_wrapper_option-0.tcsh
-		
-		
-		#Desc call
-		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-	    #changes frames_list output location TODO Do I really need to keep the frames list?
-	    sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
-	    #changes image id to the tile name (RadecID)
-	    sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-	    #changes psfdir
-	    sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedDescDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh	
-		#changes cname
-		sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes outdir
-	    sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedDescDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-	    #changes mdex output file name
-		sed -i --follow-symlinks "59s/.*.*/set outname = ${editedDescDir}\/mdex_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes meta output file name
-	    sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedDescDir}\/meta_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes verbose
-	    sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Desc_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#Run WPHOT
-		${wrapperDir}/wphot_wrapper_option-0.tcsh
-
-		#Post-WPHOT work
-
-		#stf
-		#call on Ascending
-		/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl
-		#call on Descending 
-		/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl
-		#TODO get pid, wait for pid && run cmd
-
-		#gsa
-		#set Radius
-		#echo input radius size
-		#$? > $Radius
-		/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}/stf-mrg13_desc.Opt-1a-rf2.tbl 
-
-		#mrgad
-		/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
-
-		goto Done
-
+	echo a
+		(echo y | ./wphot_wrapper_executable_opt1.tcsh 3 $ParentDir $RadecID) &  #; echo Wrapper Call for ${RadecID} success! &
+	echo b
 		while(`ps -ef | grep wphot | wc -l` > 12)
                         #echo IM WATING
                         #do nothing
-        end
-
+        	end
+	
         echo wphot for ${RadecID} done!
 
 
@@ -325,84 +248,14 @@ Mode2:
 	                echo Exiting...
 	                exit
 	        endif 
-		
-		##***READ CAUTION***, the cname == root name == unwise-0657p151... thus, same as the "base" in frames_list.tbl 
-		#automatically generates frames_list.tbl 
-		set rootname = unwise-$RadecID
-		
-		#GenWFL Makes frames list for Asce and Desc	
-		/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${TileDir}/frames_list_Asce.tbl -od ${TileDir}/frames_list_Desc.tbl -ox ${TileDir}/epochs.tbl
-		
-		#replaces escape character on all existing "/"
-		set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
-		set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
-		set editedAsceDir=`echo $AsceDir | sed 's/\//\\\//g'`
-		set editedDescDir=`echo $DescDir | sed 's/\//\\\//g'`
-		
-		#Asce call
-		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-        #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}\/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-        #changes image id to the tile name (RadecID)
-        sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-        #changes psfdir
-        sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedAsceDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh	
-		#changes cname
-		sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes outdir
-        sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedAsceDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes mdex output file name
-        sed -i --follow-symlinks "59s/.*.*/set outname = ${editedAsceDir}\/mdex_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-        #changes meta output file name
-        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedAsceDir}\/meta_asce.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes verbose
-        sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Asce_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#Run WPHOT
-		${wrapperDir}/wphot_wrapper_option-0.tcsh
+		(echo y | ./wphot_wrapper_executable_opt1.tcsh 3 $ParentDir $RadecID) &  #; echo Wrapper Call for ${RadecID} success! &
+		while(`ps -ef | grep wphot | wc -l` > 12)
+                        #echo IM WATING
+                        #do nothing
+        	end
 	
-	
-		#Desc call
-		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-        #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
-        #changes image id to the tile name (RadecID)
-        sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-        #changes psfdir
-        sed -i --follow-symlinks "40s/.*.*/set psfdir = ${editedDescDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh	
-		#changes cname
-		sed -i --follow-symlinks "47s/.*.*/set cname = ${editedUnWISEDir}\/$rootname/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes outdir
-        sed -i --follow-symlinks "55s/.*.*/set outdir = ${editedDescDir}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-        #changes mdex output file name
-		sed -i --follow-symlinks "59s/.*.*/set outname = ${editedDescDir}\/mdex_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes meta output file name
-        sed -i --follow-symlinks "60s/.*.*/set metaname = ${editedDescDir}\/meta_desc.Opt-1a.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#changes verbose
-        sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Desc_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
-		#Run WPHOT
-		${wrapperDir}/wphot_wrapper_option-0.tcsh
-
-		#Post-WPHOT work
-
-		#stf
-		#call on Ascending
-		/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl
-		#call on Descending 
-		/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl
-		#TODO get pid, wait for pid && run cmd
-
-		#gsa
-		#set Radius
-		#echo input radius size
-		#$? > $Radius
-		/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}/stf-mrg13_desc.Opt-1a-rf2.tbl 
-
-		#mrgad
-		/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
-	        
-
-	            
-	    echo ====================================== end wphot wrapper loop iteration =======================================
+        echo wphot for ${RadecID} done!
+		
 	end
 
     #===============================================================================================================================================================
@@ -470,17 +323,25 @@ Mode3:
 	
 	#GenWFL Makes frames list for Asce and Desc	
 	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${TileDir}/frames_list_Asce.tbl -od ${TileDir}/frames_list_Desc.tbl -ox ${TileDir}/epochs.tbl
-	
+	#wait for genWFL
+	#wait	
+
 	#replaces escape character on all existing "/"
 	set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
 	set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
 	set editedAsceDir=`echo $AsceDir | sed 's/\//\\\//g'`
 	set editedDescDir=`echo $DescDir | sed 's/\//\\\//g'`
+	set editedTileDir=`echo $TileDir | sed 's/\//\\\//g'`
+
+	echo "\033[1;31m Creating temp dir for $RadecID \033[0m"
+	mkdir -p ${editedCatWISEDir}/ProgramTerminalOutput/DELETEME
+	cp $wrapperDir/wphot_wrapper_option-0.tcsh ${editedCatWISEDir}/ProgramTerminalOutput/DELETEME/
+	set wrapperDir = ${editedCatWISEDir}/ProgramTerminalOutput/DELETEME
 	
 	#Asce call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedTileDir}\/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -496,13 +357,13 @@ Mode3:
 	#changes verbose
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Asce_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#Run WPHOT
-	${wrapperDir}/wphot_wrapper_option-0.tcsh
+	${wrapperDir}/wphot_wrapper_option-0.tcsh & 
 	
 	
 	#Desc call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set set flist =  ${TileDir}/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+        sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedTileDir}\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -518,25 +379,37 @@ Mode3:
 	#changes verbose
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_1a_Desc_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 	#Run WPHOT
-	${wrapperDir}/wphot_wrapper_option-0.tcsh
+	${wrapperDir}/wphot_wrapper_option-0.tcsh &
+	#wait for wphot calls to finish
+	wait
+
+	rm -rf ${editedCatWISEDir}/ProgramTerminalOutput/DELETEME
 
 	#Post-WPHOT work
 
 	#stf
 	#call on Ascending
-	/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl
+	(/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl)  
 	#call on Descending 
-	/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl
+	(/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl) 
 	#TODO get pid, wait for pid && run cmd
+	#wait for stf calls to finish
+	#wait
 
 	#gsa
 	#set Radius
 	#echo input radius size
 	#$? > $Radius
 	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}/stf-mrg13_desc.Opt-1a-rf2.tbl 
-
+	#wait for gsa calls to finish
+	#wait
+	
+	
+	
 	#mrgad
-	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl
+	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl 
+	#wait for mrgad calls to finish
+#	wait
 
 	goto Done
 

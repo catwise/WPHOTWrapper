@@ -13,13 +13,13 @@ set namelist = /Users/jarrett/wphotpm/bin/nl.WPHot_unwise
 
 #### MDET (this will change every time)
 
-set mdetfile = ../Parent_Dir//CatWISE/065/0657p151/Full/detlist.tbl
+set mdetfile = ../Parent_Dir//CatWISE/217/2174p348/Full/detlist.tbl
 
 ###### Frame parameters  (file names here will likely change)
 #CHANGE
-set set flist =  frames_list_Desc.tbl
+set flist =  ../Parent_Dir//CatWISE/217/2174p348//frames_list_Desc.tbl
 
-set imageid = 0657p151
+set imageid = 2174p348
 
 set ftype = m #KEEP need to hard code, make sure MDET wrapper and WPHOT wrapper does -m-
 
@@ -37,14 +37,14 @@ set fcov = n
 
 #set psfdir = /Volumes/CatWISE1/jwf/COSMOS_PSFs
 #CHANGE
-set psfdir = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc/
+set psfdir = ../Parent_Dir//CatWISE/217/2174p348/Full/Desc/
 
 set psfname = unWISE
 
 ####  Coadd parameters  (coadd name will change with every set) *** CAUTION -- you need to add the root name at the end of the path
 
 #CHANGE
-set cname = ../Parent_Dir//UnWISE/065/0657p151//unwise-0657p151
+set cname = ../Parent_Dir//UnWISE/217/2174p348//unwise-2174p348
 
 set ctype = u
 
@@ -52,13 +52,13 @@ set ctype = u
 #### output directories & file names 
 
 #CHANGE
-set outdir = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc/
+set outdir = ../Parent_Dir//CatWISE/217/2174p348/Full/Desc/
 mkdir -p $outdir
 
 #CHANGE
-set outname = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc//mdex_desc.Opt-1a.tbl
-set metaname = ../Parent_Dir//CatWISE/065/0657p151/Full/Desc//meta_desc.Opt-1a.tbl
-set verbose = ../Parent_Dir//CatWISE/065/0657p151/Full//ProgramTerminalOutput/wphot_1a_Desc_output.txt
+set outname = ../Parent_Dir//CatWISE/217/2174p348/Full/Desc//mdex_desc.Opt-1a.tbl
+set metaname = ../Parent_Dir//CatWISE/217/2174p348/Full/Desc//meta_desc.Opt-1a.tbl
+set verbose = ../Parent_Dir//CatWISE/217/2174p348/Full//ProgramTerminalOutput/wphot_1a_Desc_output.txt
 
 set outQAdir =  $outdir/QA 
 mkdir -p $outQAdir
@@ -84,14 +84,14 @@ echo $wphot -namlis  $namelist \
 -clevel $ctype \
 -qadir $outQAdir \
 -ofile $outname \
--meta $metaname
+-meta $metaname 
 
 echo 'begin: '
 date
 echo 'running ... standby ...'
 
 echo ' ' #binary call for wphot
-$wphot -namlis  $namelist \
+($wphot -namlis  $namelist \
 -mdettab $mdetfile \
 -mdex mdet \
 -imageid $imageid  \
@@ -104,8 +104,7 @@ $wphot -namlis  $namelist \
 -clevel $ctype \
 -qadir $outQAdir \
 -ofile $outname \
--meta $metaname -v  >& $verbose
-
+-meta $metaname -v >& $verbose) 
 
 echo ' '
 echo 'finished ; see '$verbose
