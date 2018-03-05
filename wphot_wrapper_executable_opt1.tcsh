@@ -322,7 +322,7 @@ Mode3:
 	#end
 	
 	#GenWFL Makes frames list for Asce and Desc	
-	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${TileDir}/frames_list_Asce.tbl -od ${TileDir}/frames_list_Desc.tbl -ox ${TileDir}/epochs.tbl
+	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${AsceDir}/frames_list_Asce.tbl -od ${DescDir}frames_list_Desc.tbl -ox ${CatWISEDir}/epochs.tbl
 	#wait for genWFL
 	#wait	
 
@@ -341,7 +341,7 @@ Mode3:
 	#Asce call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedTileDir}\/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "20s/.*.*/set flist =  ${AsceDir}/}\/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -363,7 +363,7 @@ Mode3:
 	#Desc call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedTileDir}\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+        sed -i --follow-symlinks "20s/.*.*/set flist =  ${DescDir}/\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -383,6 +383,7 @@ Mode3:
 	#wait for wphot calls to finish
 	wait
 
+	echo Removing ${editedCatWISEDir}/ProgramTerminalOutput/DELETEME 
 	rm -rf ${editedCatWISEDir}/ProgramTerminalOutput/DELETEME
 
 	#Post-WPHOT work
@@ -404,10 +405,10 @@ Mode3:
 	#wait for gsa calls to finish
 	#wait
 	
-	
+	set date_t = `date`
 	
 	#mrgad
-	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/mdex-option1a.tbl 
+	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/${RadecID}_opt1_${date}.tbl 
 	#wait for mrgad calls to finish
 #	wait
 
