@@ -6,9 +6,9 @@
 
 ###  these will not change during processing (one-time change only)
 
-set wphot = /Users/jarrett/wphotpm/bin/WPHotpmc #wphot binary, this is the updated wphote as of nov21, 2017
+set wphot = /Volumes/CatWISE1/CatWISEDev/WPHOT/WPHotpmc #wphot binary, this is the updated wphote as of nov21, 2017
 
-set namelist = /Users/jarrett/wphotpm/bin/nl.WPHot_unwise 
+set namelist = /Volumes/CatWISE1/CatWISEDev/WPHOT/nl.WPHot_unwise 
 
 
 #### MDET (this will change every time)

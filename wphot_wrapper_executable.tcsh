@@ -8,7 +8,7 @@ echo
 echo Wrapper Started at:
 echo $startTime
 echo 
-echo Version 2.02 
+echo Version 2.03 
 echo
 echo This Wrapper will wrap around and run WPHOTPMC
 #echo ================================================================================================================

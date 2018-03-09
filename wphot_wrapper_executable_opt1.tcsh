@@ -8,7 +8,7 @@ echo
 echo Wrapper Started at:
 echo $startTime
 echo 
-echo Version 2.02 
+echo Version 2.03 
 echo
 echo This Wrapper will wrap around and run WPHOTPMC
 #echo ================================================================================================================
@@ -217,42 +217,42 @@ Mode2:
         echo "RaRaRa == "$RaRaRa
         echo "RadecID == "$RadecID
         set UnWISEDir = $ParentDir/UnWISE/$RaRaRa/$RadecID/
-		set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
-		set TileDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/
-		set AsceDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/Asce/ 
-		set DescDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/Desc/ 
+	set CatWISEDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/ 
+	set TileDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/
+	set AsceDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/Asce/ 
+	set DescDir = $ParentDir/CatWISE/$RaRaRa/$RadecID/Full/Desc/ 
 
-		
-		#Error Checking
-		if(! -d $UnWISEDir) then
-	                echo ERROR: $UnWISEDir does not exist.
-	                echo
-	                echo Exiting...
-	                exit
-	        endif
-		if(! -d $CatWISEDir) then
-	                echo ERROR: $CatWISEDir does not exist.
-	                echo
-	                echo Exiting...
-	                exit
-	        endif 
-		if(! -d $AsceDir) then
-	                echo ERROR: $AsceDir does not exist.
-	                echo
-	                echo Exiting...
-	                exit
-	        endif
-		if(! -d $DescDir) then
-	                echo ERROR: $DescDir does not exist.
-	                echo
-	                echo Exiting...
-	                exit
-	        endif 
-		(echo y | ./wphot_wrapper_executable_opt1.tcsh 3 $ParentDir $RadecID) &  #; echo Wrapper Call for ${RadecID} success! &
-		while(`ps -ef | grep wphot | wc -l` > 12)
-                        #echo IM WATING
-                        #do nothing
-        	end
+	
+	#Error Checking
+	if(! -d $UnWISEDir) then
+	        echo ERROR: $UnWISEDir does not exist.
+	        echo
+	        echo Exiting...
+	        exit
+	endif
+	if(! -d $CatWISEDir) then
+	        echo ERROR: $CatWISEDir does not exist.
+	        echo
+	        echo Exiting...
+	        exit
+	endif 
+	if(! -d $AsceDir) then
+	        echo ERROR: $AsceDir does not exist.
+	        echo
+	        echo Exiting...
+	        exit
+	endif
+	if(! -d $DescDir) then
+	        echo ERROR: $DescDir does not exist.
+	        echo
+	        echo Exiting...
+	        exit
+	endif 
+	(echo y | ./wphot_wrapper_executable_opt1.tcsh 3 $ParentDir $RadecID) &  #; echo Wrapper Call for ${RadecID} success! &
+	while(`ps -ef | grep wphot | wc -l` > 12)
+                #echo IM WATING
+                #do nothing
+        end
 	
         echo wphot for ${RadecID} done!
 		
@@ -322,7 +322,7 @@ Mode3:
 	#end
 	
 	#GenWFL Makes frames list for Asce and Desc	
-	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${AsceDir}/frames_list_Asce.tbl -od ${DescDir}frames_list_Desc.tbl -ox ${CatWISEDir}/epochs.tbl
+	/Volumes/CatWISE1/CatWISEDev/genwfl -t $TileDir -oa ${AsceDir}/frames_list_Asce.tbl -od ${DescDir}frames_list_Desc.tbl -ox ${CatWISEDir}/epochs.tbl
 	#wait for genWFL
 	#wait	
 
@@ -390,9 +390,9 @@ Mode3:
 
 	#stf
 	#call on Ascending
-	(/Volumes/CatWISE1/jwf/bin/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl)  
+	(/Volumes/CatWISE1/CatWISEDev/stf ${AsceDir}/mdex_asce.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${AsceDir}/stf-mdex_asce.Opt-1a.tbl)  
 	#call on Descending 
-	(/Volumes/CatWISE1/jwf/bin/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl) 
+	(/Volumes/CatWISE1/CatWISEDev/stf ${DescDir}/mdex_desc.Opt-1a.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${DescDir}/stf-mdex_desc.Opt-1a.tbl) 
 	#TODO get pid, wait for pid && run cmd
 	#wait for stf calls to finish
 	#wait
@@ -401,14 +401,14 @@ Mode3:
 	#set Radius
 	#echo input radius size
 	#$? > $Radius
-	/Volumes/CatWISE1/jwf/bin/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}/stf-mrg13_desc.Opt-1a-rf2.tbl 
+	/Volumes/CatWISE1/CatWISEDev/gsa -t ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -t ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/gsa.tbl -ra1 ra -ra2 ra -dec1 dec -dec2 dec -r 20 -cw -a1 -ns -rf1 ${CatWISEDir}/stf-mrg13_asce.Opt-1a-rf1.tbl -rf2 ${CatWISEDir}/stf-mrg13_desc.Opt-1a-rf2.tbl 
 	#wait for gsa calls to finish
 	#wait
 	
 	set date_t = `date`
 	
 	#mrgad
-	/Volumes/CatWISE1/jwf/bin/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/${RadecID}_opt1_${date}.tbl 
+	/Volumes/CatWISE1/CatWISEDev/mrgad -i ${CatWISEDir}/gsa.tbl -ia ${AsceDir}/stf-mdex_asce.Opt-1a.tbl -id ${DescDir}/stf-mdex_desc.Opt-1a.tbl -o ${CatWISEDir}/${RadecID}_opt1_${date}.tbl 
 	#wait for mrgad calls to finish
 #	wait
 
