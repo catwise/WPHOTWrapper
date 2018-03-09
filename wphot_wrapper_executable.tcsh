@@ -225,10 +225,15 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 
 		#Run WPHOT Option 0
 		${wrapperDir}/wphot_wrapper_option-0.tcsh &
-		
-		(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl)  
+	
+		wait	
+		(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl) & 
 
 		while(`ps -ef | grep wphot | wc -l` > 12)
+                        #echo IM WATING
+                        #do nothing
+                end
+		while(`ps -ef | grep stf | wc -l` > 12)
                         #echo IM WATING
                         #do nothing
                 end
@@ -318,11 +323,16 @@ Mode2:
 
         #Run WPHOT Option 0
         ${wrapperDir}/wphot_wrapper_option-0.tcsh &
-       	 
-	(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl)  
+       	
+	wait 
+	(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl) & 
 
 
         while(`ps -ef | grep wphot | wc -l` > 12)
+                        #echo IM WATING
+                        #do nothing
+                end
+	while(`ps -ef | grep stf | wc -l` > 12)
                         #echo IM WATING
                         #do nothing
                 end
@@ -403,8 +413,9 @@ Mode3:
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 
 	#Run WPHOT Option 0
-	#${wrapperDir}/wphot_wrapper_option-0.tcsh
+	${wrapperDir}/wphot_wrapper_option-0.tcsh
 
+	
 	(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl)  
 
 	goto Done
