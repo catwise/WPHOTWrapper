@@ -29,7 +29,7 @@ if ($# != 2 && $# != 3) then
         echo Exiting...
         exit
 #Mode1
-else if ($1 == 1) then
+else if ($# == 2 && $1 == 1) then
         set ParentDir = $2
        # set OutputsDir = $3
         echo Parent directory ==  $ParentDir
@@ -322,7 +322,8 @@ Mode3:
 	#end
 	
 	#GenWFL Makes frames list for Asce and Desc	
-	/Volumes/CatWISE1/CatWISEDev/genwfl -t $TileDir -oa ${AsceDir}/frames_list_Asce.tbl -od ${DescDir}frames_list_Desc.tbl -ox ${CatWISEDir}/epochs.tbl
+#	/Volumes/CatWISE1/CatWISEDev/genwfl -t $TileDir -oa ${AsceDir}/frames_list_Asce.tbl -od ${DescDir}frames_list_Desc.tbl -ox ${CatWISEDir}/epochs.tbl	
+	/Volumes/CatWISE1/jwf/bin/genwfl -t $TileDir -oa ${AsceDir}/frames_list_Asce.tbl -od ${DescDir}frames_list_Desc.tbl -ox ${CatWISEDir}/epochs.tbl
 	#wait for genWFL
 	#wait	
 
@@ -341,7 +342,7 @@ Mode3:
 	#Asce call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set flist =  ${AsceDir}/}\/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
+        sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedAsceDir}\/frames_list_Asce.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -363,7 +364,7 @@ Mode3:
 	#Desc call
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        sed -i --follow-symlinks "20s/.*.*/set flist =  ${DescDir}/\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
+        sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedDescDir}\/frames_list_Desc.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh 
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir

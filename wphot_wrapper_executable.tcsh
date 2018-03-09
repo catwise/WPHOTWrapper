@@ -14,26 +14,27 @@ echo This Wrapper will wrap around and run WPHOTPMC
 #echo ================================================================================================================
 #echo WARNING\: Elijah is doing testing\/editing to this program \(Oct10 2017\). This script will not work propperly.
 #echo ================================================================================================================
-if ($# != 3) then
+if ($# != 2 && $# != 3) then
         #Error handling
-        #Too many or too little arguments  
-        echo ""     
+        #Too many or too little arguments       
+        echo ""
         echo "ERROR: not enough arguments:"
-        echo "Parameters for wrapper must be in the order:"
-        echo 1\) Option 1, 2, or 3 \(1 == Input directory, 2 == Input list, 3 == Single Tile\)
-        echo 2\) Input directory or list
-        echo 3\) Output directory
-        echo "i.e. 'icore_wrapper_executable option InputDir/List OutputDir'"
+        echo Mode 1 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 1 ParentDir/
+        echo Mode 2 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 2 inputList.txt ParentDir/
+        echo Mode 3 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 3 ParentDir/ TileName
         echo
         echo Exiting...
         exit
 #Mode1
-else if ($1 == 1) then
-        set InputsDir = $2
-        set OutputsDir = $3
-        echo Inputs directory ==  $InputsDir
-        echo Outputs directory == $OutputsDir
-        echo "Are these the correct input and output directories? (y/n)"
+else if ($# == 2 && $1 == 1) then
+        set ParentDir = $2
+       # set OutputsDir = $3
+        echo Parent directory ==  $ParentDir
+       # echo Outputs directory == $OutputsDir
+        echo "Is this the correct Parent directory? (y/n)"
         set userInput = $<
 
         #Error handling
@@ -46,19 +47,12 @@ else if ($1 == 1) then
                 exit
         endif
         #if directories dont exist, throw error
-        if(! -d $InputsDir) then
-                echo ERROR: Input Directory $InputsDir doest not exist.
+        if(! -d $ParentDir) then
+                echo ERROR: Input Directory $ParentDir doest not exist.
                 echo
                 echo Exiting...
                 exit
         endif
-        if (! -d $OutputsDir) then
-                echo ERROR: Output Directory $OutputsDir does not exist.
-                echo
-                echo Exiting...
-                exit
-        endif
-
 	goto Mode1
 #Mode2
 else if ($1 == 2) then
@@ -132,8 +126,9 @@ Mode1:
 #===============================================================================================================================================================        
 # loops through all of the tiles and executes wphot
 
-set FulldepthDir = ${InputsDir}/
+set FulldepthDir = $ParentDir/UnWISE/
 
+echo iterating over $FulldepthDir
 echo Wrapper now starting...
 echo
 echo
@@ -194,9 +189,10 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 		#replaces escape character on all existing "/"
 		set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
 		set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
+		set editedTileDir=`echo $TileDir | sed 's/\//\\\//g'`
 		sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         	#changes frames_list output location TODO Do I really need to keep the frames list?
-        	#sed -i --follow-symlinks "22s/.*.*/set set flist =  frames_list.tbl" ${wrapperDir}/wphot_wrapper_option-0 #for this tile, list of the epochs. Wphot-Wrapper needs to generate this.
+		 sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedTileDir}\/frames_list.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         	#changes image id to the tile name (RadecID)
         	sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         	#changes psfdir
@@ -285,9 +281,10 @@ Mode2:
         #replaces escape character on all existing "/"
         set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
         set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
+	set editedTileDir=`echo $TileDir | sed 's/\//\\\//g'`
         sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        #sed -i --follow-symlinks "22s/.*.*/set set flist =  frames_list.tbl" ${wrapperDir}/wphot_wrapper_option-0 #for this tile, list of the epochs. Wphot-Wrapper needs to generate this.
+	 sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedTileDir}\/frames_list.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
@@ -368,9 +365,10 @@ Mode3:
 	#replaces escape character on all existing "/"
 	set editedUnWISEDir=`echo $UnWISEDir | sed 's/\//\\\//g'`
 	set editedCatWISEDir=`echo $CatWISEDir | sed 's/\//\\\//g'`
+	 set editedTileDir=`echo $TileDir | sed 's/\//\\\//g'`
 	sed -i --follow-symlinks "16s/.*.*/set mdetfile = ${editedCatWISEDir}detlist.tbl/g" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes frames_list output location TODO Do I really need to keep the frames list?
-        #sed -i --follow-symlinks "22s/.*.*/set set flist =  frames_list.tbl" ${wrapperDir}/wphot_wrapper_option-0 #for this tile, list of the epochs. Wphot-Wrapper needs to generate this.
+	sed -i --follow-symlinks "20s/.*.*/set flist =  ${editedTileDir}\/frames_list.tbl/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes image id to the tile name (RadecID)
         sed -i --follow-symlinks "22s/.*.*/set imageid = ${RadecID}/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
         #changes psfdir
