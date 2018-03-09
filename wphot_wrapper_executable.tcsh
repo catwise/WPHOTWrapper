@@ -107,16 +107,31 @@ else if ($1 == 3) then
         endif
         #if directories dont exist, throw error
         if(! -d $ParentDir) then
+		echo
                 echo ERROR: $ParentDir doest not exist.
                 echo
-                echo Exiting...
+		echo Mode 1 call:
+      		echo ./wphot_wrapper_executable_opt1.tcsh 1 ParentDir/
+       		echo Mode 2 call:
+        	echo ./wphot_wrapper_executable_opt1.tcsh 2 inputList.txt ParentDir/
+        	echo Mode 3 call:
+        	echo ./wphot_wrapper_executable_opt1.tcsh 3 ParentDir/ TileName
+                echo
+		echo Exiting...
                 exit
         endif
 	goto Mode3
 else
         #Error handling
         #option 1/2/3 not second parameter. program exits.
+	echo
         echo ERROR mode 1, 2, or 3 not selected
+	echo Mode 1 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 1 ParentDir/
+        echo Mode 2 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 2 inputList.txt ParentDir/
+        echo Mode 3 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 3 ParentDir/ TileName
         echo
         echo Exiting...
 	exit
@@ -211,6 +226,7 @@ foreach RaRaRaDir ($FulldepthDir*/) #for each directory in FulldepthDir, get eac
 		#Run WPHOT Option 0
 		${wrapperDir}/wphot_wrapper_option-0.tcsh &
 		
+		(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl)  
 
 		while(`ps -ef | grep wphot | wc -l` > 12)
                         #echo IM WATING
@@ -302,7 +318,9 @@ Mode2:
 
         #Run WPHOT Option 0
         ${wrapperDir}/wphot_wrapper_option-0.tcsh &
-        
+       	 
+	(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl)  
+
 
         while(`ps -ef | grep wphot | wc -l` > 12)
                         #echo IM WATING
@@ -385,7 +403,10 @@ Mode3:
         sed -i --follow-symlinks "61s/.*.*/set verbose = ${editedCatWISEDir}\/ProgramTerminalOutput\/wphot_output.txt/" ${wrapperDir}/wphot_wrapper_option-0.tcsh
 
 	#Run WPHOT Option 0
-	${wrapperDir}/wphot_wrapper_option-0.tcsh
+	#${wrapperDir}/wphot_wrapper_option-0.tcsh
+
+	(/Volumes/CatWISE1/CatWISEDev/stf ${CatWISEDir}/mdex_STD-msk.tbl 1-11 16-21 28 29 32 33 36-39 44-49 56-60 63 64 67-77 88-93 100-105 112-117 124-129 136-141 148-153 160-165 172-177 184-205 228 231 234-246 259-275 278-281 286-291 298-301 > ${CatWISEDir}/stf-mdex_STD-msk.tbl)  
+
 	goto Done
 
 Done:

@@ -123,7 +123,14 @@ else if ($1 == 3) then
 else
         #Error handling
         #option 1/2/3 not second parameter. program exits.
-        echo ERROR mode 1, 2, or 3 not selected
+        echo
+	echo ERROR mode 1, 2, or 3 not selected
+	echo Mode 1 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 1 ParentDir/
+        echo Mode 2 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 2 inputList.txt ParentDir/
+        echo Mode 3 call:
+        echo ./wphot_wrapper_executable_opt1.tcsh 3 ParentDir/ TileName
         echo
         echo Exiting...
 	exit

@@ -13,13 +13,13 @@ set namelist = /Volumes/CatWISE1/CatWISEDev/WPHOT/nl.WPHot_unwise
 
 #### MDET (this will change every time)
 
-set mdetfile = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/054/0544m016/Full/detlist.tbl
+set mdetfile = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/043/0438p030/Full/detlist.tbl
 
 ###### Frame parameters  (file names here will likely change)
 #CHANGE
-set flist =  /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/054/0544m016//frames_list.tbl
+set flist =  /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/043/0438p030//frames_list.tbl
 
-set imageid = 0544m016
+set imageid = 0438p030
 
 set ftype = m #KEEP need to hard code, make sure MDET wrapper and WPHOT wrapper does -m-
 
@@ -37,14 +37,14 @@ set fcov = n
 
 #set psfdir = /Volumes/CatWISE1/jwf/COSMOS_PSFs
 #CHANGE
-set psfdir = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/054/0544m016/Full/
+set psfdir = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/043/0438p030/Full/
 
 set psfname = unWISE
 
 ####  Coadd parameters  (coadd name will change with every set) *** CAUTION -- you need to add the root name at the end of the path
 
 #CHANGE
-set cname = /Volumes/CatWISE1/fmarocco/PipelineTest/UnWISE/054/0544m016//unwise-0544m016
+set cname = /Volumes/CatWISE1/fmarocco/PipelineTest/UnWISE/043/0438p030//unwise-0438p030
 
 set ctype = u
 
@@ -52,13 +52,13 @@ set ctype = u
 #### output directories & file names 
 
 #CHANGE
-set outdir = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/054/0544m016/Full/
+set outdir = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/043/0438p030/Full/
 mkdir -p $outdir
 
 #CHANGE
-set outname = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/054/0544m016/Full//mdex_STD-msk.tbl
-set metaname = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/054/0544m016/Full//meta_STD-msk.tbl
-set verbose = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/054/0544m016/Full//ProgramTerminalOutput/wphot_output.txt
+set outname = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/043/0438p030/Full//mdex_STD-msk.tbl
+set metaname = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/043/0438p030/Full//meta_STD-msk.tbl
+set verbose = /Volumes/CatWISE1/fmarocco/PipelineTest/CatWISE/043/0438p030/Full//ProgramTerminalOutput/wphot_output.txt
 
 set outQAdir =  $outdir/QA 
 mkdir -p $outQAdir
