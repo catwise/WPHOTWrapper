@@ -16,5 +16,5 @@
 	* **./wphot_wrapper_executable** 3 \<ParentDirectory\> \<TileName\>
   
 ## Arguments
-  * \-nl <NamesList>
+  * \-nl \<NamesList\>
   * \-rsync
